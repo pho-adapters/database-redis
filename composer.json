@@ -12,7 +12,8 @@
         }
     ],
     "require": {
-        "php":"^7.1"
+        "php":"^7.1",
+	"predis/predis": "^1.1"
     },
     "provide": {
         "phonetworks/service-storage-implementation": "1.0"
