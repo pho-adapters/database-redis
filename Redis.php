@@ -49,35 +49,10 @@ class Redis implements DatabaseInterface, ServiceInterface {
    */
   private $lists;
 
-  public function __construct(Kernel $kernel, array $params = []) {
-    array_unshift($params, "tcp"); // replace redis:// with tcp://
-    $this->client = new \Predis\Client($this->_unparse_url($params));
+  public function __construct(Kernel $kernel, string $uri = "") {
+    $this->client = new \Predis\Client($uri);
     $this->kernel = $kernel;
   }
-
-  /**
-   * Helper method to form a URL 
-   *
-   * Does the exact opposite of PHP's parse_url function.
-   * 
-   * @see http://php.net/manual/en/function.parse-url.php#106731 for original snippet
-   * 
-   * @param array $parsed_url
-   * @return string
-   */
-  private function _unparse_url(array $parsed_url): string 
-  { 
-        $scheme   = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : ''; 
-        $host     = isset($parsed_url['host']) ? $parsed_url['host'] : ''; 
-        $port     = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : ''; 
-        $user     = isset($parsed_url['user']) ? $parsed_url['user'] : ''; 
-        $pass     = isset($parsed_url['pass']) ? ':' . $parsed_url['pass']  : ''; 
-        $pass     = ($user || $pass) ? "$pass@" : ''; 
-        $path     = isset($parsed_url['path']) ? $parsed_url['path'] : ''; 
-        $query    = isset($parsed_url['query']) ? '?' . $parsed_url['query'] : ''; 
-        $fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : ''; 
-        return "$scheme$user$pass$host$port$path$query$fragment"; 
-  } 
 
   public function __call(string $method, array $arguments) {
     return $this->client->$method(...$arguments);
