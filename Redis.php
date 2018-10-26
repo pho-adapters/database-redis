@@ -97,5 +97,13 @@ class Redis implements DatabaseInterface, ServiceInterface {
   {
     return $this->client->ttl($key);
   }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public function client()/*: mixed */
+  {
+    return $this->client;
+  }
 
 }
